@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Device } from 'src/api/device/entities/device.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
@@ -22,4 +29,7 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', name: 'request_code', default: '' })
   public requestCode: string;
+
+  @OneToMany((type) => Device, (device) => device.user)
+  public devices: Device[];
 }
