@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { User } from '../user/entities/user.entity';
 
 import { CreateDeviceDto } from './dto/create-device.dto';
 import { UpdateDeviceDto } from './dto/update-device.dto';
@@ -8,11 +9,27 @@ import { Device } from './entities/device.entity';
 
 @Injectable()
 export class DeviceService {
+  @InjectRepository(User)
+  private readonly userRepository: Repository<User>;
+
   @InjectRepository(Device)
   private readonly repository: Repository<Device>;
 
   async create(createDeviceDto: CreateDeviceDto) {
-    return await this.repository.save(createDeviceDto);
+    const { userId } = createDeviceDto;
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new HttpException('user not found', HttpStatus.NOT_FOUND);
+    }
+    delete createDeviceDto.userId;
+    const device = new Device();
+    device.name = createDeviceDto.name;
+    device.model = createDeviceDto.model;
+    device.operatingSystem = createDeviceDto.operatingSystem;
+    device.user = user;
+    return await this.repository.save(device);
   }
 
   async findAll() {
