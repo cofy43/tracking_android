@@ -1,4 +1,4 @@
-import { Controller, Post, Res } from '@nestjs/common';
+import { Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { Response } from 'express';
 
@@ -9,5 +9,10 @@ export class EmailController {
   @Post('/send')
   private sendEmail(@Res() res: Response) {
     return this.emailService.sendEmail(res);
+  }
+
+  @Post('/send-message/:phoneNumber')
+  sendaWhatsApp(@Param('phoneNumber') phoneNumber: string) {
+    return this.emailService.sendaWhatsApp(phoneNumber);
   }
 }

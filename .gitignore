@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # Enviroment
 src/common/envs/*.*
+
+# Whatsaap trash
+.wwebjs_auth/

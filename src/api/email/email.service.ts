@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { GmailService } from 'src/common/utils/email';
+import { WhatsAppService } from 'src/common/utils/whatsaap';
+import * as fs from 'fs';
 
 @Injectable()
 export class EmailService {
   private gmailService = new GmailService();
+
+  private whatsAppService = new WhatsAppService();
 
   public async sendEmail(res) {
     const subject = `test correo`;
@@ -20,5 +24,9 @@ export class EmailService {
       '',
       [],
     );
+  }
+
+  async sendaWhatsApp(phoneNumber: string) {
+    return await this.whatsAppService.sendMessage(phoneNumber, 'hola');
   }
 }
