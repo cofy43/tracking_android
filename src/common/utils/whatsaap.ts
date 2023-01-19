@@ -18,10 +18,6 @@ client.on('qr', async (qr) => {
 client.on('authenticated', () => {
   console.log('AUTH!');
   //authed = true;
-
-  try {
-    fs.unlinkSync('./components/last.qr');
-  } catch (err) {}
 });
 
 client.on('auth_failure', () => {
